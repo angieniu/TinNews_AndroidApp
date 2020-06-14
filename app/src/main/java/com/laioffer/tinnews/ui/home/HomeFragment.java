@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,10 +18,32 @@ import com.laioffer.tinnews.repository.NewsRepository;
 import com.laioffer.tinnews.repository.NewsViewModelFactory;
 import com.mindorks.placeholderview.SwipeDecor;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements
+        TinNewsCard.OnSwipeListener {
+
 
     private HomeViewModel viewModel;
     private FragmentHomeBinding binding;
+
+        @Override
+    public void onLike(Article news) {
+            viewModel.setFavoriteArticleInput(news);
+
+                    }
+
+            @Override
+    public void onDisLike(Article news) {
+                if (binding.swipeView.getChildCount() < 3) {
+                    viewModel.setCountryInput("us");
+                }
+
+                    }
+
+            @Override
+   public void onDestroyView() {
+               super.onDestroyView();
+               viewModel.onCancel();
+            }
 
 
 
@@ -64,10 +87,23 @@ public class HomeFragment extends Fragment {
                             if (newsResponse != null) {
                                 Log.d("HomeFragment", newsResponse.toString());
                                 for (Article article : newsResponse.articles) {
-                                                              TinNewsCard tinNewsCard = new TinNewsCard(article);
+                                                              TinNewsCard tinNewsCard = new TinNewsCard(article, this);
                                                               binding.swipeView.addView(tinNewsCard);
                                                            }
 
                             }
                         });
+                viewModel
+                                .onFavorite()
+                                .observe(
+                                        getViewLifecycleOwner(),
+                                        isSuccess -> {
+                                                if (isSuccess) {
+                                                        Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        Toast.makeText(getContext(), "You might have liked before", Toast.LENGTH_SHORT).show();
+                                                    }
+                                            });
+
+
     }}
