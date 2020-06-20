@@ -3,7 +3,10 @@
     <string name="title_home">Home</string>
     <string name="title_save">Save</string>
     <string name="title_search">Search</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <!-- Existing items ... -->
+    <string name="title_detail">Detail</string>
+
+    <string name="unknown_author">Unknown Author (未知作者)</string>
+        <string name="description">Description: (描述:)</string>
+        <string name='author'>Author: (作者:)</string>
+
 </resources>

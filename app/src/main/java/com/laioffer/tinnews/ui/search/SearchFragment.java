@@ -6,14 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.laioffer.tinnews.databinding.FragmentSearchBinding;
+import com.laioffer.tinnews.model.Article;
 import com.laioffer.tinnews.repository.NewsRepository;
 import com.laioffer.tinnews.repository.NewsViewModelFactory;
 
@@ -44,7 +47,26 @@ public class SearchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
             SearchNewsAdapter newsAdapter = new SearchNewsAdapter();
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+                newsAdapter.setLikeListener(new SearchNewsAdapter.LikeListener() {
+            @Override
+            public void onLike(Article article) {
+                                viewModel.setFavoriteArticleInput(article);
+                            }
+
+                    @Override
+            public void onClick(Article article) {
+                                // TODO
+//                        NavHostFragment.findNavController(SearchFragment.this).navigate(R.id.action_title_search_to_detail);
+                        SearchFragmentDirections.ActionTitleSearchToDetail actionTitleSearchToDetail = SearchFragmentDirections.actionTitleSearchToDetail();
+                                        actionTitleSearchToDetail.setArticle(article);
+                                        NavHostFragment.findNavController(SearchFragment.this).navigate(actionTitleSearchToDetail);
+
+                    }
+
+
+        });
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
             gridLayoutManager.setSpanSizeLookup(
                             new GridLayoutManager.SpanSizeLookup() {
                 @Override
@@ -83,5 +105,24 @@ public class SearchFragment extends Fragment {
 
                             }
                         });
+                viewModel
+                                .onFavorite()
+                                .observe(
+                                        getViewLifecycleOwner(),
+                                        isSuccess -> {
+                                                if (isSuccess) {
+                                                        Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show();
+                                                        newsAdapter.notifyDataSetChanged();
+                                                    } else {
+                                                        Toast.makeText(requireActivity(), "You might have liked before", Toast.LENGTH_SHORT).show();
+                                                    }
+                                            });
+
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewModel.onCancel();
+    }
+
 }
