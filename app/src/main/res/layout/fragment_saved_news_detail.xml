@@ -33,6 +33,7 @@
         <View
             android:id="@+id/delimiter"
             android:layout_width="1dp"
+            android:layout_height="0dp"
             android:layout_margin="@dimen/four_dp"
             android:background="#dedddd"
             app:layout_constraintBottom_toBottomOf="@id/author"

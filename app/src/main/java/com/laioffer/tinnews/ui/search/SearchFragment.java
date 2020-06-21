@@ -56,7 +56,7 @@ public class SearchFragment extends Fragment {
                     @Override
             public void onClick(Article article) {
                                 // TODO
-//                        NavHostFragment.findNavController(SearchFragment.this).navigate(R.id.action_title_search_to_detail);
+//                        NavHostFragment.findNavControlle(SearchFragment.this).navigate(R.id.action_title_search_to_detail);
                         SearchFragmentDirections.ActionTitleSearchToDetail actionTitleSearchToDetail = SearchFragmentDirections.actionTitleSearchToDetail();
                                         actionTitleSearchToDetail.setArticle(article);
                                         NavHostFragment.findNavController(SearchFragment.this).navigate(actionTitleSearchToDetail);
@@ -112,7 +112,7 @@ public class SearchFragment extends Fragment {
                                         isSuccess -> {
                                                 if (isSuccess) {
                                                         Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show();
-                                                        newsAdapter.notifyDataSetChanged();
+                                                        newsAdapter.notifyDataSetChanged(); // heart lightened
                                                     } else {
                                                         Toast.makeText(requireActivity(), "You might have liked before", Toast.LENGTH_SHORT).show();
                                                     }
