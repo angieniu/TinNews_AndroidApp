@@ -11,3 +11,4 @@
     <dimen name="fifty_dp">50dp</dimen>
 </resources>
     <!-- responsive development -->
+<!--variable name, refactoring package concern   <dimen name="tn_four_dp"></dimen>-->
